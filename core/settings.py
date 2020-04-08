@@ -17,9 +17,9 @@ PROJECT_DIR = Path(__file__).parent
 SECRET_KEY = config('SECRET_KEY', default='S#perS3crEt_1122')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False)
+DEBUG = config('DEBUG', default=True)
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'django-dashboard-black-pro.herokuapp.com','scoring-dashboard.azurewebsites.net']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 

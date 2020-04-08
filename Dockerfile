@@ -1,16 +1,21 @@
-FROM python:3.6
+# For more information, please refer to https://aka.ms/vscode-docker-python
+FROM python:3.8
 
-ENV FLASK_APP run.py
+EXPOSE 8000
 
-COPY manage.py gunicorn-cfg.py requirements.txt .env ./
-COPY app app
-COPY authentication authentication
-COPY core core
+# Keeps Python from generating .pyc files in the container
+ENV PYTHONDONTWRITEBYTECODE 1
 
-RUN pip install -r requirements.txt
+# Turns off buffering for easier container logging
+ENV PYTHONUNBUFFERED 1
 
-RUN python manage.py makemigrations
-RUN python manage.py migrate
+# Install pip requirements
+ADD requirements.txt .
+RUN python -m pip install -r requirements.txt
 
-EXPOSE 5005
-CMD ["gunicorn", "--config", "gunicorn-cfg.py", "core.wsgi"]
+WORKDIR /app
+ADD . /app
+
+# During debugging, this entry point will be overridden. For more information, refer to https://aka.ms/vscode-docker-python-debug
+# File wsgi.py was not found in subfolder:django-dashboard-black. Please enter the Python path to wsgi file.
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "pythonPath.to.wsgi"]
